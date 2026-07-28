@@ -24,6 +24,8 @@
 * **Manual Adjustments Made**:
   > Overrode the AI's legacy setup instructions to enforce Tailwind v4 standards. Manually uninstalled unnecessary `postcss` dependencies, implemented the `@tailwindcss/vite` plugin within `vite.config.js`, and updated `index.css` to use the modern `@import "tailwindcss";` directive.
 
+---
+
   ## Module: Backend Architecture & Database Configuration
 ### Prompt: TypeScript Interface Optimization for Mongoose
 * **Date**: 2026-07-28
@@ -60,3 +62,44 @@
   > The AI generated the test blocks, defining the expected request payloads and asserting HTTP status codes (201 for registration, 200 for login) according to the API specification.
 * **Manual Adjustments Made**:
   > Placed the file in the dedicated `tests/integration/` directory to enforce structural separation from unit tests. Executed the test suite to validate the "Red Phase" (receiving expected 404 errors as the controllers are not yet implemented), confirming the TDD environment is fully operational.
+
+---
+
+  ## Module: TDD Implementation (Green & Refactor Phase) - Authentication Logic & Architecture
+### Prompt: Controller Implementation and Architecture Decoupling
+* **Date**: 2026-07-28
+* **Tool Used**: Gemini
+* **Prompt**:
+  > Provide the controller logic for `register` and `login`, extract the token generation into a utility folder, wire up `routes` and `app.ts`, and resolve the Mongoose `findOne()` buffering timeout error during test execution.
+* **Generated Output / Context**:
+  > The AI provided the initial implementation for the authentication controllers, the `generateToken` utility, and the routing logic. It also identified the architectural necessity to decouple `app.ts` (Express setup) from `server.ts` (Database connection) to prevent conflicts, and supplied the Jest lifecycle hooks (`beforeAll`, `afterEach`, `afterAll`) to correctly bind Mongoose to the `mongodb-memory-server`.
+* **Manual Adjustments Made**:
+  > Applied the code and verified the fix for the database buffering timeout. Transferred database connection logic to `server.ts` to ensure complete isolation for the test suite.
+
+---
+
+## Module: TDD Implementation (Green Phase) - Authentication Debugging
+### Prompt: Resolve 500 Internal Server Error and Payload Mismatch
+* **Date**: 2026-07-28
+* **Tool Used**: VS Code AI
+* **Prompt**:
+  > (Automated Context via Editor) Fix test suite failures where registration returns a 500 error instead of 400 for missing fields, and throws an "Illegal arguments: undefined, string" error from bcrypt. Also, correct the response structure to match the test expectation of `res.body.user`.
+* **Generated Output / Context**:
+  > The AI analyzed the authentication controller and test output, identifying that `req.body` inputs were not being validated. It patched the `register` controller by adding early-return validation (`if (!name || !email || !password)`) to prevent bcrypt from hashing an undefined password. It also restructured the successful JSON response to nest user details inside a `user` object.
+* **Manual Adjustments Made**:
+  > Reviewed and accepted the generated patch. Re-ran the test suite to confirm all 6 authentication integration tests now pass successfully (Green Phase achieved).
+
+---
+
+  ## Module: TDD Implementation (Test Infrastructure) - RBAC Authentication Helpers
+### Prompt: Implement Isolated Test Helpers for User and Admin JWT Generation
+* **Date**: 2026-07-28
+* **Tool Used**: Gemini
+* **Prompt**:
+  > Create test helper functions to streamline authentication in upcoming integration tests. Specifically, implement two distinct helpers: one to create a standard user and return their JWT, and another to create a user, manually update their database role to 'admin', and return the resulting admin JWT.
+* **Generated Output / Context**:
+  > The AI generated `tests/helpers/authSetup.ts` containing `getTestUserToken()` and `getTestAdminToken()`. These isolated utilities automate the registration, role-promotion (via Mongoose `findOneAndUpdate`), and login flows, returning valid JWTs for standard and administrative roles. This keeps the test suite DRY (Don't Repeat Yourself) and enforces the Single Responsibility Principle for integration testing.
+* **Manual Adjustments Made**:
+  > Integrated the helper utilities into the testing directory structure, confirming they are ready to be utilized within the `beforeEach` hooks for the upcoming Vehicle and Inventory API integration tests.
+
+  
