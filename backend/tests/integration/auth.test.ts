@@ -1,6 +1,34 @@
 import request from 'supertest';
 import app from '../../src/app';
 import { User } from '../../src/models/User';
+import mongoose from 'mongoose';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+
+let mongoServer: MongoMemoryServer;
+
+// 1. Connect to the in-memory database before all tests
+beforeAll(async () => {
+  mongoServer = await MongoMemoryServer.create();
+  const mongoUri = mongoServer.getUri();
+  await mongoose.connect(mongoUri);
+});
+
+// 2. Clear all test data after every single test
+afterEach(async () => {
+  const collections = mongoose.connection.collections;
+  for (const key in collections) {
+    const collection = collections[key];
+    await collection.deleteMany({});
+  }
+});
+
+// 3. Disconnect and stop the server after all tests finish
+afterAll(async () => {
+  await mongoose.disconnect();
+  await mongoServer.stop();
+});
+
+// ... Keep your existing describe('Auth Endpoints', () => { ... }) blocks below
 
 describe('Auth Endpoints (/api/auth)', () => {
   const testUser = {

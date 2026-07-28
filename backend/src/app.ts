@@ -1,12 +1,12 @@
 import express from 'express';
+import authRoutes from './routes/authRoutes';
 
 const app = express();
 
-// Built-in middleware for parsing JSON
+// Middleware to parse incoming JSON payloads
 app.use(express.json());
 
-// Routes will be added here later
-// app.use('/api/auth', authRoutes);
+// Mount the authentication routes
+app.use('/api/auth', authRoutes);
 
-// This line is required to fix the TS(1192) error
 export default app;
