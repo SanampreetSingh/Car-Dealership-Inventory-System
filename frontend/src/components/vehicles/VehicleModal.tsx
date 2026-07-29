@@ -83,11 +83,15 @@ const VehicleModal = ({ vehicle, onClose, onPurchased }: VehicleModalProps) => {
                 (e.target as HTMLImageElement).src = FALLBACK_IMG;
               }}
             />
-            {outOfStock && (
+            {outOfStock ? (
               <span className="absolute left-3 top-3 rounded-full bg-red-900/90 px-2.5 py-1 text-xs font-semibold text-red-100">
                 Sold Out
               </span>
-            )}
+            ) : vehicle.quantity > 0 && vehicle.quantity < 5 ? (
+              <span className="absolute left-3 top-3 rounded-full bg-amber-900/90 px-2.5 py-1 text-xs font-semibold text-amber-100">
+                Few Left
+              </span>
+            ) : null}
           </div>
 
           {/* Details */}
@@ -108,7 +112,11 @@ const VehicleModal = ({ vehicle, onClose, onPurchased }: VehicleModalProps) => {
               </span>
               <span className="flex items-center gap-1.5">
                 <Gauge className="h-4 w-4 text-amber-600" />
-                {vehicle.quantity > 0 ? `${vehicle.quantity} in stock` : 'Unavailable'}
+                {vehicle.quantity === 0
+                  ? 'Out of stock'
+                  : vehicle.quantity < 5
+                    ? 'Only a few left'
+                    : 'In stock'}
               </span>
               <span className="flex items-center gap-1.5">
                 <Tag className="h-4 w-4 text-amber-600" /> {vehicle.category}

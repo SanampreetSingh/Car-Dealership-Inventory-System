@@ -65,11 +65,15 @@ const VehicleCard = ({ vehicle, onPurchased, onQuickView }: VehicleCardProps) =>
         <span className="absolute left-3 top-3 rounded-full bg-stone-950/80 px-2.5 py-1 text-xs font-medium capitalize text-amber-400 backdrop-blur-sm">
           {vehicle.category}
         </span>
-        {outOfStock && (
+        {outOfStock ? (
           <span className="absolute right-3 top-3 rounded-full bg-red-900/90 px-2.5 py-1 text-xs font-semibold text-red-100">
             Sold Out
           </span>
-        )}
+        ) : vehicle.quantity > 0 && vehicle.quantity < 5 ? (
+          <span className="absolute right-3 top-3 rounded-full bg-amber-900/90 px-2.5 py-1 text-xs font-semibold text-amber-100">
+            Few Left
+          </span>
+        ) : null}
       </div>
 
       <div className="flex flex-1 flex-col gap-2 p-4">
@@ -86,13 +90,22 @@ const VehicleCard = ({ vehicle, onPurchased, onQuickView }: VehicleCardProps) =>
           </span>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3 text-xs text-stone-400">
-          <span className="flex items-center gap-1">
-            <Calendar className="h-3.5 w-3.5" /> {vehicle.year}
-          </span>
-          <span className="flex items-center gap-1">
-            <Gauge className="h-3.5 w-3.5" />
-            {vehicle.quantity > 0 ? `${vehicle.quantity} in stock` : 'Unavailable'}
+        <div className="flex flex-col gap-2 text-xs text-stone-400">
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="flex items-center gap-1">
+              <Calendar className="h-3.5 w-3.5" /> {vehicle.year}
+            </span>
+            <span className="flex items-center gap-1">
+              <Gauge className="h-3.5 w-3.5" />
+              {vehicle.quantity === 0
+                ? 'Out of stock'
+                : vehicle.quantity < 5
+                  ? 'Only a few left'
+                  : 'In stock'}
+            </span>
+          </div>
+          <span className="text-[11px] font-medium uppercase tracking-wide text-stone-500">
+            {vehicle.category}
           </span>
         </div>
 
