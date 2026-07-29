@@ -186,3 +186,30 @@
 * **Manual Adjustments Made**:
   > Finalized the controller logic, aligned import paths with project conventions (`controllers/user.vehicle.controller` and `middlewares/auth.middleware`), and confirmed the app-level route integration strategy.
 
+---
+
+## Module: Frontend Architecture & Scaffold
+### Prompt: Reinitialize Frontend with TypeScript, Tailwind v4, Redux Toolkit
+* **Date**: 2026-07-29
+* **Tool Used**: Claude (Sonnet)
+* **Prompt**:
+  > I need a good interactive frontend, not the typical AI-generated one. Plan: homepage with a hero section, navbar with global search, search page with filters, product cards with a purchase button, admin CRUD, and a sliding login/register panel (my own reference design). Prefer App.tsx for routes, Redux Toolkit or localStorage for state, separate API files, global error handling and toasts. Give me the init commands.
+* **Generated Output / Context**:
+  > After clarifying language (TypeScript), animation approach (Framer Motion + Tailwind combo), and toast library (sonner) preference, the AI provided commands to reinitialize the frontend via Vite's `react-ts` template, install Tailwind v4 (`@tailwindcss/vite`), Redux Toolkit, react-router-dom, axios, framer-motion, sonner, lucide-react, react-hook-form, and clsx/tailwind-merge. It also proposed the full folder structure (api/, app/, features/, components/, pages/) later confirmed against the actual project.
+* **Manual Adjustments Made**:
+  > Ran the provided commands, confirmed the project booted, and set up `.env` with `VITE_API_BASE_URL` pointing to the local backend.
+
+---
+
+## Module: Frontend Core Plumbing
+### Prompt: Build Types, Axios Instance, Redux Store, and App Routing
+* **Date**: 2026-07-29
+* **Tool Used**: Claude (Sonnet)
+* **Prompt**:
+  > Let's lay the plumbing first — API layer, Redux store, types, and routing. Everything else builds on top of this.
+* **Generated Output / Context**:
+  > The AI generated shared TypeScript interfaces matching the backend API doc exactly (User, Vehicle, AuthResponse, VehicleListResponse, etc.), a centralized axios instance with a request interceptor that auto-attaches the JWT and a response interceptor for global error handling (401 auto-logout, 403/5xx toast messages), separate `authApi.ts`/`vehicleApi.ts` files, an `authSlice`/`vehicleSlice` pair with localStorage persistence for auth, typed Redux hooks, a `ProtectedRoute` wrapper, and the initial `App.tsx` route skeleton.
+* **Manual Adjustments Made**:
+  > Verified the interceptor correctly reads `VITE_API_BASE_URL` from `.env` with no hardcoded URLs anywhere, and confirmed the login response's flat shape vs. register's nested shape would need normalization later in the Auth page.
+
+---
