@@ -142,3 +142,19 @@
   > Placed `dummy-car.jpg` in the `tests/fixtures/` folder. Ran the test suite using `npx jest admin.vehicle.test.ts` to confirm it fails as expected (TDD Red Phase) since the backend controllers are not yet implemented.
 
 ---
+
+## Module: Vehicle Inventory - Admin Test Suite (Green Phase)
+### Prompt: Debug and Pass Admin Integration Tests
+* **Date**: 2026-07-29
+* **Tool Used**: Gemini
+* **Prompt**:
+  > The admin vehicle integration tests are failing with timeouts, 404s, and 500 errors. Help me debug the test environment, fix the controller logic, and properly configure the mocked Multer/Cloudinary setup so the test suite passes (transitioning to the Green Phase).
+* **Generated Output / Context**:
+  > The AI identified and resolved several critical testing and backend bugs:
+  > 1. Controller Logic: Fixed Mongoose queries in `updateVehicle` and `restockVehicle` to use the validated `vehicleId` instead of the raw `id` parameter.
+  > 2. Test DB Setup: Integrated `mongodb-memory-server` into `authSetup.ts` to prevent Mongoose buffering timeouts and isolate test data.
+  > 3. Route Mounting: Added the missing `adminVehicleRoutes` to `src/app.ts` to resolve systemic 404 errors.
+  > 4. Multer Stream Timeout: Updated the `multer-storage-cloudinary` Jest mock to explicitly drain the readable file stream (`file.stream.on('data', ...)`), preventing Node.js from keeping the HTTP request open indefinitely.
+  > 5. Indexing: Added `await Vehicle.syncIndexes()` to the test setup to ensure the compound unique index correctly triggered the 409 Conflict duplicate test.
+* **Manual Adjustments Made**:
+  > Applied the revised configurations to `app.ts`, `authSetup.ts`, and the test file. Wrapped the real MongoDB connection in `app.ts` with an environment check (`process.env.NODE_ENV !== 'test'`). Executed `npx jest tests/integration/admin.vehicle.test.ts` to confirm a 100% pass rate (17/17 tests).

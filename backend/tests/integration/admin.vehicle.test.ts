@@ -2,18 +2,45 @@ import request from 'supertest';
 import path from 'path';
 import mongoose from 'mongoose';
 import app from '../../src/app'; 
-import { getTestAdminToken, getTestUserToken } from '../helpers/authSetup';
+import Vehicle from '../../src/models/Vehicle';
+import { 
+  connectTestDB, 
+  closeTestDB, 
+  getTestAdminToken, 
+  getTestUserToken 
+} from '../helpers/authSetup';
 
-// Mock Cloudinary to prevent actual uploads during testing
-jest.mock('../../src/config/cloudinary', () => ({
-  uploader: {
-    upload: jest.fn().mockResolvedValue({
-      secure_url: 'https://res.cloudinary.com/demo/image/upload/dummy-car.jpg',
-      public_id: 'test_car_image_id',
-    }),
-    destroy: jest.fn().mockResolvedValue({ result: 'ok' }),
-  },
-}));
+// Mock Multer's Cloudinary storage engine
+jest.mock('multer-storage-cloudinary', () => {
+  return {
+    CloudinaryStorage: jest.fn().mockImplementation(() => ({
+      _handleFile: (req: any, file: any, cb: any) => {
+        // 1. We MUST consume the readable stream, otherwise the request hangs forever
+        file.stream.on('data', () => {
+          // Just discard the data chunks, we don't need them in tests
+        });
+        
+        // 2. When the stream is finished, trigger the success callback
+        file.stream.on('end', () => {
+          cb(null, {
+            path: 'https://res.cloudinary.com/demo/image/upload/dummy-car.jpg',
+            filename: 'dummy-car-public-id',
+          });
+        });
+
+        // Catch any stream errors just in case
+        file.stream.on('error', (err: any) => {
+          cb(err);
+        });
+      },
+      _removeFile: (req: any, file: any, cb: any) => {
+        cb(null);
+      },
+    })),
+  };
+});
+
+
 
 describe('Admin Vehicle API Integration Tests', () => {
   let adminToken: string;
@@ -22,15 +49,18 @@ describe('Admin Vehicle API Integration Tests', () => {
   const dummyImagePath = path.join(__dirname, '../fixtures/dummy-car.jpg');
 
   beforeAll(async () => {
+    // 1. Connect to In-Memory DB FIRST
+    await connectTestDB();
+    await Vehicle.syncIndexes();
+    // 2. NOW run your auth helpers 
     adminToken = await getTestAdminToken();
     userToken = await getTestUserToken();
   });
 
   afterAll(async () => {
-    await mongoose.connection.dropDatabase();
-    await mongoose.connection.close();
+    // 3. Clean up the database and close connections
+    await closeTestDB();
   });
-
   // ==========================================
   // 1. CREATE VEHICLE (POST /api/vehicles)
   // ==========================================

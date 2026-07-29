@@ -1,12 +1,24 @@
-import express from 'express';
-import authRoutes from './routes/authRoutes';
+import express, { Application } from 'express';
+import cors from 'cors';
 
-const app = express();
+// Import Routers
+import authRoutes from './routes/auth.routes'; // Assuming you have an auth router
+import adminVehicleRoutes from './routes/admin.vehicle.routes';
 
-// Middleware to parse incoming JSON payloads
+const app: Application = express();
+
+// Global Middlewares
+app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Mount the authentication routes
-app.use('/api/auth', authRoutes);
+// API Routes
+app.use('/api/auth', authRoutes); 
+app.use('/api/vehicles', adminVehicleRoutes);
+
+// Optional: Basic 404 handler for undefined routes
+app.use((req, res) => {
+  res.status(404).json({ message: 'Route not found' });
+});
 
 export default app;

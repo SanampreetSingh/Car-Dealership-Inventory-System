@@ -1,6 +1,37 @@
 import request from 'supertest';
+import mongoose from 'mongoose';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import app from '../../src/app';
 import { User } from '../../src/models/User';
+
+let mongoServer: MongoMemoryServer;
+
+// ==========================================
+// DATABASE HELPERS
+// ==========================================
+
+export const connectTestDB = async () => {
+  // Prevent creating multiple instances if connectTestDB is called multiple times
+  if (!mongoServer) {
+    mongoServer = await MongoMemoryServer.create();
+  }
+  const uri = mongoServer.getUri();
+  await mongoose.connect(uri);
+};
+
+export const closeTestDB = async () => {
+  if (mongoose.connection.readyState !== 0) {
+    await mongoose.connection.dropDatabase();
+    await mongoose.connection.close();
+  }
+  if (mongoServer) {
+    await mongoServer.stop();
+  }
+};
+
+// ==========================================
+// AUTHENTICATION HELPERS
+// ==========================================
 
 // Helper 1: Generates and returns a standard user JWT
 export const getTestUserToken = async (): Promise<string> => {
