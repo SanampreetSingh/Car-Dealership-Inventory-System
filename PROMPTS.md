@@ -158,3 +158,20 @@
   > 5. Indexing: Added `await Vehicle.syncIndexes()` to the test setup to ensure the compound unique index correctly triggered the 409 Conflict duplicate test.
 * **Manual Adjustments Made**:
   > Applied the revised configurations to `app.ts`, `authSetup.ts`, and the test file. Wrapped the real MongoDB connection in `app.ts` with an environment check (`process.env.NODE_ENV !== 'test'`). Executed `npx jest tests/integration/admin.vehicle.test.ts` to confirm a 100% pass rate (17/17 tests).
+
+
+---
+
+  ## Module: Vehicle Inventory - Public & User Test Suite (Setup & Specifications)
+### Prompt: Design Public/User Integration Tests and Seed Helper
+* **Date**: 2026-07-29
+* **Tool Used**: Gemini
+* **Prompt**:
+  > Now let's create a test for the vehicle. Give all bullet point tests without code. Also, let's create a helper to add vehicles in the in-memory MongoDB by admin—it should have one 0-stock vehicle and 3-4 other vehicles with different filters so I can use the filters and fetch them. Include the search endpoint (`GET /api/vehicles/search`) with all types, and the protected purchase endpoint (`POST /api/vehicles/:id/purchase`) for authenticated users.
+* **Generated Output / Context**:
+  > The AI outlined comprehensive test specifications for the public catalog, advanced multi-parameter search filters, and protected purchase operations. Additionally, it generated a robust `vehicleSetup.ts` seed helper utilizing `mongodb-memory-server` to pre-populate the in-memory test database with a diverse inventory (including varying categories, prices, and an out-of-stock vehicle).
+* **Manual Adjustments Made**:
+  > Reviewed the test specifications against the MERN stack architecture and prepared the seed utility for integration into the upcoming public/user test suite execution.
+
+---
+
