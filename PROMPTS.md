@@ -252,3 +252,16 @@
   > Tested toggling between login and register on both desktop and mobile widths, and confirmed redirect-after-login using `location.state.from` worked for the default homepage redirect case.
 
 ---
+
+## Module: Admin Dashboard
+### Prompt: Build Loading Spinner, Vehicle Form, Admin Table, and Dashboard
+* **Date**: 2026-07-29
+* **Tool Used**: Claude (Sonnet)
+* **Prompt**:
+  > Complete the LoadingSpinner (it was planned but never actually used), then build the Admin Dashboard — vehicle form (add/edit with image upload) + management table (delete/restock).
+* **Generated Output / Context**:
+  > The AI built a reusable LoadingSpinner (inline and full-screen variants), a VehicleForm with image upload/preview using FormData and react-hook-form, an AdminTable with inline restock and inline delete-confirmation (no native browser `confirm()`), and an AdminDashboard tying it together with inventory stat cards (total/in-stock/low-stock/out-of-stock).
+* **Manual Adjustments Made**:
+  > Confirmed the LoadingSpinner was actually wired into real loading states (dashboard's initial fetch, delete-confirm button) rather than left unused again, and tested add/edit/delete/restock flows against the running backend.
+
+---
