@@ -6,25 +6,31 @@ import Vehicle from '../models/Vehicle';
 export const createVehicle = async (req: Request, res: Response) => {
   try {
     const { make, model, category, price, quantity, year, description } = req.body;
-    let imageUrl = '';
+    const imageUrl = req.file ? (req.file.path || (req.file as any).secure_url || '') : '';
 
-    // multer-storage-cloudinary handles the upload and places the secure URL in req.file.path
-    if (req.file) {
-      imageUrl = req.file.path; 
+    const vehiclePayload: any = {
+      make: typeof make === 'string' ? make.trim() : make,
+      model: typeof model === 'string' ? model.trim() : model,
+      category: typeof category === 'string' ? category.trim() : category,
+      price: Number(price),
+      quantity: Number(quantity),
+      year: year !== undefined && year !== '' ? Number(year) : undefined,
+      description: typeof description === 'string' ? description.trim() : description,
+    };
+
+    if (imageUrl) {
+      vehiclePayload.imageUrl = imageUrl;
     }
 
-    const newVehicle = await Vehicle.create({
-      make,
-      model,
-      category,
-      price,
-      quantity,
-      year,
-      description,
-      imageUrl,
-    });
+    const newVehicle = await Vehicle.create(vehiclePayload);
 
-    return res.status(201).json({ vehicle: newVehicle });
+    const responseVehicle = {
+      ...newVehicle.toObject(),
+      imageUrl: newVehicle.imageUrl,
+      image: newVehicle.imageUrl,
+    };
+
+    return res.status(201).json({ vehicle: responseVehicle });
   } catch (error: any) {
     // Catch MongoDB Compound Index Duplicate Error
     if (error.code === 11000) {
@@ -50,21 +56,30 @@ export const updateVehicle = async (req: Request, res: Response) => {
 
     const updates = { ...req.body };
 
-    // Update image only if a new one was uploaded
     if (req.file) {
-      updates.imageUrl = req.file.path; 
+      updates.imageUrl = req.file.path;
     }
 
-    const updatedVehicle = await Vehicle.findByIdAndUpdate(vehicleId, updates, { 
-      new: true, 
-      runValidators: true 
+    if (updates.price !== undefined) updates.price = Number(updates.price);
+    if (updates.quantity !== undefined) updates.quantity = Number(updates.quantity);
+    if (updates.year !== undefined && updates.year !== '') {
+      updates.year = Number(updates.year);
+    }
+    if (typeof updates.category === 'string') updates.category = updates.category.trim();
+    if (typeof updates.make === 'string') updates.make = updates.make.trim();
+    if (typeof updates.model === 'string') updates.model = updates.model.trim();
+    if (typeof updates.description === 'string') updates.description = updates.description.trim();
+
+    const updatedVehicle = await Vehicle.findByIdAndUpdate(vehicleId, updates, {
+      new: true,
+      runValidators: true,
     });
 
     if (!updatedVehicle) {
       return res.status(404).json({ message: 'Vehicle not found' });
     }
 
-    return res.status(200).json({ vehicle: updatedVehicle });
+    return res.status(200).json({ vehicle: updatedVehicle ? { ...updatedVehicle.toObject(), imageUrl: updatedVehicle.imageUrl, image: updatedVehicle.imageUrl } : null });
   } catch (error: any) {
     if (error.code === 11000) {
       return res.status(409).json({ message: 'Update creates a duplicate vehicle.' });

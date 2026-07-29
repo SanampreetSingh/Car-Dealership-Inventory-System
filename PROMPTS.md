@@ -291,3 +291,81 @@
   > Tested three redirect paths end-to-end: card purchase while logged out, modal purchase while logged out, and direct navigation to /admin while logged out — all three now correctly return the user to their original destination after login.
 
 ---
+
+## Module: Backend Bug Fixes — Admin Vehicle Routes
+### Prompt: Diagnose and Fix TypeScript Errors in Admin Controller/Routes
+* **Date**: 2026-07-29
+* **Tool Used**: GitHub Copilot (VS Code)
+* **Prompt**:
+  > There is an error in this file and the admin.vehicle.routes.ts — check them and fix it.
+* **Generated Output / Context**:
+  > The AI diagnosed two issues: unsafe handling of `req.params.id` (which Express can type as a string or string array) causing TypeScript strict-mode errors, and a route import path resolving incorrectly under the project's `tsconfig.json` module resolution settings. It normalized the ID extraction with an `Array.isArray()` guard before `mongoose.Types.ObjectId.isValid()` checks, and corrected the import paths.
+* **Manual Adjustments Made**:
+  > Verified the fix against `npm run build` and confirmed zero TypeScript diagnostics remained in both files before proceeding.
+
+---
+
+## Module: Frontend Bug Fixes — Full Codebase TypeScript/Lint Pass
+### Prompt: Fix All Frontend Errors Without Changing Logic
+* **Date**: 2026-07-29
+* **Tool Used**: GitHub Copilot (VS Code)
+* **Prompt**:
+  > Check all frontend, there are a lot of small errors — don't change any code, just fix those errors.
+* **Generated Output / Context**:
+  > The AI ran diagnostics across all 28 frontend source files and identified ~78 issues, mostly: `verbatimModuleSyntax` violations requiring `import type` for type-only imports (`User`, `Vehicle`, `VehicleFilters`, etc.), a few unused imports (`useEffect`, `Tag`), a broken JSX fragment in `HomePage.tsx`, and outdated Tailwind v3 gradient class syntax (`bg-gradient-to-r`) that needed migrating to Tailwind v4's `bg-linear-to-r` syntax in a few files. Fixed iteratively across multiple passes until diagnostics returned clean.
+* **Manual Adjustments Made**:
+  > Reviewed each diff to confirm no functional logic changed — purely import/type/syntax corrections — before accepting.
+
+---
+
+## Module: Frontend/Backend Alignment — Admin Routes & Category Enum
+### Prompt: Align Frontend Request Routes and Category Values with Backend
+* **Date**: 2026-07-29
+* **Tool Used**: GitHub Copilot (VS Code)
+* **Prompt**:
+  > Check and fix routes for requests in the frontend, and also the category — like in the backend, take all those categories in the frontend.
+* **Generated Output / Context**:
+  > The AI found that `createVehicle`, `updateVehicle`, `deleteVehicle`, and `restockVehicle` in `vehicleApi.ts` were still targeting the public `/vehicles` routes instead of the correct `/admin/vehicles` routes used for protected admin mutations. It also found the frontend's category list (`sedan`, `suv`, `truck`, etc., lowercase) didn't match the backend's actual enum casing/values, and updated `FilterSidebar.tsx`, `VehicleForm.tsx`, and `Footer.tsx` to use the same category set as the backend schema.
+* **Manual Adjustments Made**:
+  > Confirmed the corrected admin routes matched the backend's mounted route prefixes exactly, and spot-checked that category dropdowns/filters rendered the updated values correctly in the UI.
+
+---
+
+## Module: Image Upload Debugging — Field Mismatch & Cloudinary
+### Prompt: Diagnose 400 Bad Request on Vehicle Creation + Image Mismatch
+* **Date**: 2026-07-29
+* **Tool Used**: GitHub Copilot (VS Code)
+* **Prompt**:
+  > (Series of prompts across one debugging session) "Why is this a 400 Bad Request, and why is the uploaded image different from the image shown in the app?" → "Even after uploading, the image I see is .webp but not the .jpg I uploaded?" → "The image is not getting uploaded to Cloudinary at all — check the whole route end to end, maybe a minor naming issue."
+* **Generated Output / Context**:
+  > Across several iterations, the AI found and fixed three separate bugs: (1) the backend stored the uploaded file's Cloudinary URL as `imageUrl` internally but the API responses and frontend types only referenced `image`, causing a silent mismatch that made the UI show fallback images; (2) the backend wasn't always returning the field consistently across create/update responses, so it patched the controller to return both `imageUrl` and `image` for compatibility; (3) the actual root cause of the failed upload was that the frontend's global axios instance hardcoded `Content-Type: application/json` on every request, which broke the multipart boundary needed for file uploads — removing that hardcoded header let axios set the correct multipart boundary automatically.
+* **Manual Adjustments Made**:
+  > Tested the full upload flow end-to-end after each fix (create with image, edit with new image, confirm Cloudinary URL renders correctly) before confirming the issue was resolved. Noted that Cloudinary serving files as `.webp` regardless of the uploaded format is expected optimization behavior, not a bug.
+
+---
+
+## Module: Search Behavior — Attempted Unification, Then Reverted
+### Prompt: Unify Search Page Filtering with Global Navbar Search
+* **Date**: 2026-07-29
+* **Tool Used**: GitHub Copilot (VS Code)
+* **Prompt**:
+  > The search filter on the Search page should work the same as the global navbar search, since people might type a model name or category too, not just a make.
+* **Generated Output / Context**:
+  > The AI added a `keyword` field to `VehicleFilters`, modified `SearchPage.tsx` to always use the paginated `getVehicles` endpoint with a keyword parameter instead of switching to the separate `/vehicles/search` endpoint, and updated the backend's `getVehicles` controller to search across `make`, `model`, `description`, and `category` when a keyword was present.
+* **Manual Adjustments Made**:
+  > After reviewing the change, decided the original separate keyword-search vs. filter-search behavior (matching the backend API's actual documented design) was preferable, and reverted all changes across `SearchPage.tsx`, `types/index.ts`, and `user.vehicle.controller.ts` back to the prior working state via targeted edits and `git checkout`.
+
+---
+
+## Module: Auth UI Bug Fix — Sliding Panel Layout
+### Prompt: Fix Sliding Auth Panel Rendering on Wrong Side
+* **Date**: 2026-07-29
+* **Tool Used**: Claude (Sonnet)
+* **Prompt**:
+  > When clicking Register, the brand panel slides correctly, but the register form opens below/behind the panel on the right side instead of sliding into the left.
+* **Generated Output / Context**:
+  > Diagnosed that the form container used an invisible `position: static` spacer div with a CSS `transform: translateX()` to try to mimic sliding — but transforms don't affect document flow, so the spacer still occupied its original layout position regardless of animation state, leaving the real form pinned to the wrong side. Restructured the form container as its own `position: absolute` element anchored to the opposite edge from the brand panel (mirroring the working pattern already used by `SlidingPanel.tsx`), so both panels now animate correctly via `transform` without fighting document flow.
+* **Manual Adjustments Made**:
+  > Tested toggling between login/register on desktop to confirm both panels now slide symmetrically, and verified the mobile fallback (stacked layout, no transform) was unaffected by the restructure.
+
+---
