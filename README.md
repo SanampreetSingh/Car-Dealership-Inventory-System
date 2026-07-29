@@ -41,49 +41,49 @@ The app is designed to feel polished and modern. Below is a horizontally scrolla
   <div style="min-width:280px; border:1px solid #d4d4d4; border-radius:12px; padding:12px; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
     <strong>Homepage Hero</strong>
     <a href="https://drive.google.com/file/d/1dHQoe-ekjCJv7_MmNcJLY5khwz6dgwwU/view?usp=sharing" target="_blank" rel="noreferrer">
-      <img src="https://drive.google.com/thumbnail?id=1dHQoe-ekjCJv7_MmNcJLY5khwz6dgwwU&sz=w1000" alt="Homepage hero section" style="width:100%; height:180px; object-fit:cover; border-radius:10px; margin-top:8px;" />
+      <img src="https://drive.google.com/thumbnail?id=1dHQoe-ekjCJv7_MmNcJLY5khwz6dgwwU&sz=w1000" alt="Homepage hero section" style="width:100%;  object-fit:cover; border-radius:10px; margin-top:8px;" />
     </a>
   </div>
   <div style="min-width:280px; border:1px solid #d4d4d4; border-radius:12px; padding:12px; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
     <strong>Featured Vehicles</strong>
     <a href="https://drive.google.com/file/d/1Nd-YFg8T0wbiMWMq8MDQ5PM8rDMxqyd3/view?usp=sharing" target="_blank" rel="noreferrer">
-      <img src="https://drive.google.com/thumbnail?id=1Nd-YFg8T0wbiMWMq8MDQ5PM8rDMxqyd3&sz=w1000" alt="Homepage featured vehicles section" style="width:100%; height:180px; object-fit:cover; border-radius:10px; margin-top:8px;" />
+      <img src="https://drive.google.com/thumbnail?id=1Nd-YFg8T0wbiMWMq8MDQ5PM8rDMxqyd3&sz=w1000" alt="Homepage featured vehicles section" style="width:100%; object-fit:cover; border-radius:10px; margin-top:8px;" />
     </a>
   </div>
   <div style="min-width:280px; border:1px solid #d4d4d4; border-radius:12px; padding:12px; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
     <strong>Homepage Footer</strong>
     <a href="https://drive.google.com/file/d/1OPrn0sDPnHfrzUwH34SYWzgonl1IxvU5/view?usp=sharing" target="_blank" rel="noreferrer">
-      <img src="https://drive.google.com/thumbnail?id=1OPrn0sDPnHfrzUwH34SYWzgonl1IxvU5&sz=w1000" alt="Homepage footer" style="width:100%; height:180px; object-fit:cover; border-radius:10px; margin-top:8px;" />
+      <img src="https://drive.google.com/thumbnail?id=1OPrn0sDPnHfrzUwH34SYWzgonl1IxvU5&sz=w1000" alt="Homepage footer" style="width:100%;object-fit:cover; border-radius:10px; margin-top:8px;" />
     </a>
   </div>
   <div style="min-width:280px; border:1px solid #d4d4d4; border-radius:12px; padding:12px; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
     <strong>Search Page</strong>
     <a href="https://drive.google.com/file/d/1KNIKZDX5xdtwflFdxy4ypNDN4fZv7SV2/view?usp=sharing" target="_blank" rel="noreferrer">
-      <img src="https://drive.google.com/thumbnail?id=1KNIKZDX5xdtwflFdxy4ypNDN4fZv7SV2&sz=w1000" alt="Search page with filters" style="width:100%; height:180px; object-fit:cover; border-radius:10px; margin-top:8px;" />
+      <img src="https://drive.google.com/thumbnail?id=1KNIKZDX5xdtwflFdxy4ypNDN4fZv7SV2&sz=w1000" alt="Search page with filters" style="width:100%; object-fit:cover; border-radius:10px; margin-top:8px;" />
     </a>
   </div>
   <div style="min-width:280px; border:1px solid #d4d4d4; border-radius:12px; padding:12px; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
     <strong>Admin Hero</strong>
     <a href="https://drive.google.com/file/d/11mzVB4HUBH9e5ta2dqdtvJT3HX1YIVco/view?usp=sharing" target="_blank" rel="noreferrer">
-      <img src="https://drive.google.com/thumbnail?id=11mzVB4HUBH9e5ta2dqdtvJT3HX1YIVco&sz=w1000" alt="Admin hero section" style="width:100%; height:180px; object-fit:cover; border-radius:10px; margin-top:8px;" />
+      <img src="https://drive.google.com/thumbnail?id=11mzVB4HUBH9e5ta2dqdtvJT3HX1YIVco&sz=w1000" alt="Admin hero section" style="width:100%;  object-fit:cover; border-radius:10px; margin-top:8px;" />
     </a>
   </div>
   <div style="min-width:280px; border:1px solid #d4d4d4; border-radius:12px; padding:12px; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
     <strong>Admin Dashboard</strong>
     <a href="https://drive.google.com/file/d/1FLk9AmlxJ2Ov_eh82K8vwuJJEO08Lzo6/view?usp=sharing" target="_blank" rel="noreferrer">
-      <img src="https://drive.google.com/thumbnail?id=1FLk9AmlxJ2Ov_eh82K8vwuJJEO08Lzo6&sz=w1000" alt="Admin dashboard" style="width:100%; height:180px; object-fit:cover; border-radius:10px; margin-top:8px;" />
+      <img src="https://drive.google.com/thumbnail?id=1FLk9AmlxJ2Ov_eh82K8vwuJJEO08Lzo6&sz=w1000" alt="Admin dashboard" style="width:100%; object-fit:cover; border-radius:10px; margin-top:8px;" />
     </a>
   </div>
   <div style="min-width:280px; border:1px solid #d4d4d4; border-radius:12px; padding:12px; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
     <strong>Login</strong>
     <a href="https://drive.google.com/file/d/1D4HOewbuOAYhaENMzayWd2jNXZ8Hnlpy/view?usp=sharing" target="_blank" rel="noreferrer">
-      <img src="https://drive.google.com/thumbnail?id=1D4HOewbuOAYhaENMzayWd2jNXZ8Hnlpy&sz=w1000" alt="Login page" style="width:100%; height:180px; object-fit:cover; border-radius:10px; margin-top:8px;" />
+      <img src="https://drive.google.com/thumbnail?id=1D4HOewbuOAYhaENMzayWd2jNXZ8Hnlpy&sz=w1000" alt="Login page" style="width:100%; object-fit:cover; border-radius:10px; margin-top:8px;" />
     </a>
   </div>
   <div style="min-width:280px; border:1px solid #d4d4d4; border-radius:12px; padding:12px; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
     <strong>Register</strong>
     <a href="https://drive.google.com/file/d/1i5mlIuXOSRh2Y0noqsb4DOEW6hBfEuRr/view?usp=sharing" target="_blank" rel="noreferrer">
-      <img src="https://drive.google.com/thumbnail?id=1i5mlIuXOSRh2Y0noqsb4DOEW6hBfEuRr&sz=w1000" alt="Register page" style="width:100%; height:180px; object-fit:cover; border-radius:10px; margin-top:8px;" />
+      <img src="https://drive.google.com/thumbnail?id=1i5mlIuXOSRh2Y0noqsb4DOEW6hBfEuRr&sz=w1000" alt="Register page" style="width:100%; object-fit:cover; border-radius:10px; margin-top:8px;" />
     </a>
   </div>
 </div>
