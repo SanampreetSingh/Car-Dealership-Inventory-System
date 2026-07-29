@@ -114,4 +114,31 @@
   > The AI provided the Cloudinary v2 SDK initialization in `src/config/cloudinary.ts` along with a dedicated live integration test (`tests/integration/cloudinary.test.ts`). The test utilizes a 1x1 base64-encoded image string to execute an actual upload request to Cloudinary, verify the returning `secure_url` and `public_id`, and subsequently invoke `uploader.destroy` to ensure resource cleanup without needing physical test files on disk.
 * **Manual Adjustments Made**:
   > Installed `cloudinary`, `multer`, and `multer-storage-cloudinary` packages inside the `backend` directory, added Cloudinary API credentials to `.env`, and executed targeted testing via `npx jest cloudinary.test.ts` to confirm external service connectivity.
-  
+
+  ---
+
+## Module: Vehicle Inventory - Admin Test Planning
+### Prompt: Outline Admin Test Scenarios
+* **Date**: 2026-07-29
+* **Tool Used**: Gemini
+* **Prompt**:
+  > Please provide a comprehensive bulleted list of all integration test scenarios for the Admin Vehicle API (Create, Update, Delete, Restock). Focus only on the test planning for now; do not generate code.
+* **Generated Output / Context**:
+  > The AI provided a clear, bulleted list of all the test scenarios an admin can perform on the vehicle system. This included success cases and failure cases (like missing data or wrong user roles) for creating, updating, and deleting vehicles. 
+* **Manual Adjustments Made**:
+  > Reviewed the test plan and decided it would be cleaner to separate the Admin actions (mutations) from the User actions (queries) into different test files.
+
+---
+
+## Module: Vehicle Inventory - Admin Test Suite (Red Phase)
+### Prompt: Generate Admin-Only Integration Tests
+* **Date**: 2026-07-29
+* **Tool Used**: Gemini
+* **Prompt**:
+  > Let's adopt a clean architecture approach and separate the Admin and User APIs. Please generate the test suite exclusively for Admin operations (Create, Update, Delete) handling all edge cases. I will handle the User fetch/search queries separately.
+* **Generated Output / Context**:
+  > The AI generated the `tests/integration/admin.vehicle.test.ts` file, focusing strictly on Admin-only actions (POST, PUT, DELETE, RESTOCK). The code includes a mocked Cloudinary setup so testing doesn't make real network calls, and it tests image uploads, data validation, and role-based access control (RBAC).
+* **Manual Adjustments Made**:
+  > Placed `dummy-car.jpg` in the `tests/fixtures/` folder. Ran the test suite using `npx jest admin.vehicle.test.ts` to confirm it fails as expected (TDD Red Phase) since the backend controllers are not yet implemented.
+
+---

@@ -1,7 +1,5 @@
 import { Schema, model } from 'mongoose';
-
-// 1. TypeScript Interface for type safety across your app
-export interface IVehicle  {
+export interface IVehicle {
   make: string;
   model: string;
   category: string;
@@ -67,6 +65,9 @@ const vehicleSchema = new Schema<IVehicle>(
     timestamps: true, // Automatically manages createdAt and updatedAt fields
   }
 );
+
+// This prevents creating duplicate vehicles. The controller will catch MongoDB Error Code 11000.
+vehicleSchema.index({ make: 1, model: 1, year: 1, category: 1 }, { unique: true });
 
 // 3. Export Model
 export const Vehicle = model<IVehicle>('Vehicle', vehicleSchema);
