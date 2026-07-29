@@ -265,3 +265,16 @@
   > Confirmed the LoadingSpinner was actually wired into real loading states (dashboard's initial fetch, delete-confirm button) rather than left unused again, and tested add/edit/delete/restock flows against the running backend.
 
 ---
+
+## Module: Vehicle Grid & Quick-View Modal
+### Prompt: Build Reusable Vehicle Grid and Quick-View Modal
+* **Date**: 2026-07-29
+* **Tool Used**: Claude (Sonnet)
+* **Prompt**:
+  > We planned VehicleGrid and VehicleModal but never built or used them — let's build them properly and refactor HomePage/SearchPage to use them.
+* **Generated Output / Context**:
+  > The AI extracted the repeated grid/skeleton/empty-state logic from HomePage and SearchPage into a single reusable VehicleGrid component, built a VehicleModal for a "quick view" experience (larger image, full description, purchase action without leaving the grid), and updated VehicleCard to support an `onQuickView` callback on the image/title area while keeping the purchase button's click isolated via `stopPropagation`.
+* **Manual Adjustments Made**:
+  > Refactored HomePage.tsx and SearchPage.tsx to use VehicleGrid + VehicleModal instead of inline duplicated logic, and verified purchasing from inside the modal correctly syncs the quantity back to the underlying grid state.
+
+---
