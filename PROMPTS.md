@@ -239,3 +239,16 @@
   > Verified filters correctly persisted across page refresh via the URL, and that switching to a keyword search correctly hid the filter sidebar per the backend's endpoint design.
 
 ---
+
+## Module: Authentication UI
+### Prompt: Build Sliding Auth Panel, Login/Register Forms, and Auth Page
+* **Date**: 2026-07-29
+* **Tool Used**: Claude (Sonnet)
+* **Prompt**:
+  > Build the Auth page — sliding panel evolved from my reference, with Framer Motion transitions, a responsive mobile fallback (stacked instead of split), and normalized login/register response handling.
+* **Generated Output / Context**:
+  > The AI built a SlidingPanel component with Framer Motion-driven copy transitions, LoginForm/RegisterForm using react-hook-form with validation and password visibility toggles, and an AuthPage that normalizes the backend's two different auth response shapes (login returns a flat object, register returns a nested `{user, token}` object) into one consistent shape before dispatching to Redux.
+* **Manual Adjustments Made**:
+  > Tested toggling between login and register on both desktop and mobile widths, and confirmed redirect-after-login using `location.state.from` worked for the default homepage redirect case.
+
+---
