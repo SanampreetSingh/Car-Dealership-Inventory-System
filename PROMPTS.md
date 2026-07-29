@@ -102,4 +102,16 @@
 * **Manual Adjustments Made**:
   > Integrated the helper utilities into the testing directory structure, confirming they are ready to be utilized within the `beforeEach` hooks for the upcoming Vehicle and Inventory API integration tests.
 
+  ---
+
+## Module: Vehicle & Media Infrastructure - Cloudinary Integration
+### Prompt: Setup Cloudinary Configuration and Live Integration Test Suite
+* **Date**: 2026-07-29
+* **Tool Used**: Gemini
+* **Prompt**:
+  > Help configure Cloudinary for vehicle photo management and write an integration test to verify the actual Cloudinary connection, image upload, and resource cleanup logic.
+* **Generated Output / Context**:
+  > The AI provided the Cloudinary v2 SDK initialization in `src/config/cloudinary.ts` along with a dedicated live integration test (`tests/integration/cloudinary.test.ts`). The test utilizes a 1x1 base64-encoded image string to execute an actual upload request to Cloudinary, verify the returning `secure_url` and `public_id`, and subsequently invoke `uploader.destroy` to ensure resource cleanup without needing physical test files on disk.
+* **Manual Adjustments Made**:
+  > Installed `cloudinary`, `multer`, and `multer-storage-cloudinary` packages inside the `backend` directory, added Cloudinary API credentials to `.env`, and executed targeted testing via `npx jest cloudinary.test.ts` to confirm external service connectivity.
   

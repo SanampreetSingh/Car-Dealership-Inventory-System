@@ -60,6 +60,7 @@ const vehicleSchema = new Schema<IVehicle>(
     imageUrl: {
       type: String,
       default: '',
+      required: false,
     },
   },
   {
