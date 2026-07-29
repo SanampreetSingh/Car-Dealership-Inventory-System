@@ -93,13 +93,14 @@ const HomePage = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7, delay: 0.15 }}
-              className="relative"
+              className="group relative"
             >
               <div className="absolute -inset-4 rounded-3xl bg-linear-to-tr from-amber-600/20 to-transparent blur-2xl" />
+              <div className="absolute inset-0 rounded-2xl bg-linear-to-t from-stone-950/50 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
               <img
                 src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=900&auto=format&fit=crop&q=80"
                 alt="Featured vehicle"
-                className="relative rounded-2xl border border-stone-800 object-cover shadow-2xl"
+                className="relative rounded-2xl border border-stone-800 object-cover shadow-2xl transition-all duration-300 group-hover:scale-[1.02] group-hover:shadow-amber-900/20"
               />
             </motion.div>
           </div>

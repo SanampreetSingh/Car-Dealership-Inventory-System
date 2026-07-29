@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { X, Upload, Save } from 'lucide-react';
 import type { Vehicle } from '../../types';
@@ -22,7 +22,7 @@ interface VehicleFormProps {
   onSuccess: (vehicle: Vehicle) => void;
 }
 
-const CATEGORIES = ['Sedan', 'SUV', 'Truck', 'Coupe', 'Hatchback', 'EV', 'Convertible', 'Other'];
+const CATEGORIES = ['Sedan', 'SUV', 'Truck', 'Coupe', 'Hatchback', 'EV', 'Convertible', 'Luxury', 'MPV', 'Other'];
 
 const VehicleForm = ({ editingVehicle, onClose, onSuccess }: VehicleFormProps) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -199,7 +199,7 @@ const VehicleForm = ({ editingVehicle, onClose, onSuccess }: VehicleFormProps) =
           <button
             type="submit"
             disabled={submitting}
-            className="flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 py-2.5 font-semibold text-stone-950 shadow-lg shadow-amber-900/30 transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex w-full items-center justify-center gap-2 rounded-lg bg-linear-to-r from-amber-500 to-amber-600 py-2.5 font-semibold text-stone-950 shadow-lg shadow-amber-900/30 transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
           >
             {submitting ? (
               <LoadingSpinner size="sm" className="text-stone-950" />

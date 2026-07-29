@@ -369,3 +369,16 @@
   > Tested toggling between login/register on desktop to confirm both panels now slide symmetrically, and verified the mobile fallback (stacked layout, no transform) was unaffected by the restructure.
 
 ---
+
+## Module: Pagination Stability — Unified Listing & Diagnostics
+### Prompt: Stabilize paginated vehicle listing and add diagnostics
+* **Date**: 2026-07-29
+* **Tool Used**: GitHub Copilot (VS Code)
+* **Prompt**:
+  > The app shows duplicate vehicles across paginated pages after bulk seeding (many documents share the same `createdAt`). Please: Make the backend listing endpoint deterministic so skip/limit pagination cannot return overlapping results when timestamps are identical. Unify keyword + filter listing so the frontend and backend use the same paginated endpoint (preserving filter state in the URL), or, if a separate keyword endpoint is kept, ensure the frontend consistently calls the correct endpoint without mixing behaviors. Add a small diagnostic route or controller helper that returns only `_id` values for a given `page`, `limit`, and filters so I can quickly inspect returned ID sets for page overlap. Add focused tests that assert stable ordering and non-overlapping `_id` sets across pages when many docs share `createdAt`. Deliver: A short plan (3–5 steps) to reproduce and verify the pagination fix. Controller/route snippet for the diagnostic endpoint. Paths of modified files and a concise commit message to apply after the change.
+* **Generated Output / Context**:
+  > Plan: (1) Add deterministic tiebreaker to server-side sort (e.g., `.sort({ createdAt: -1, _id: 1 })`). (2) Update frontend `SearchPage` to call the unified listing with `keyword` as an optional param and clamp/reset `page` when filters change. (3) Add diagnostic route `GET /api/vehicles/ids` returning only `_id` for a page+filters. (4) Add integration tests that insert several docs with identical `createdAt`, call listing for pages 1..N, and assert no overlapping `_id` values. (5) Run seed + tests and verify UI pagination shows unique items per page. Test plan: create 20 vehicles with identical `createdAt`, request pages with `limit=6` and assert each page's `_id` set is unique and union length equals total returned across pages, and assert `getVehicles` respects filters + keyword while maintaining deterministic ordering.
+* **Manual Adjustments Made**:
+  > Implemented deterministic sort tie-breaker in `backend/src/controllers/user.vehicle.controller.ts`: `.sort({ createdAt: -1, _id: 1 })`. Updated `frontend/src/pages/SearchPage.tsx` to call the unified endpoint and to reset/clamp `page` when filters change. Added simple diagnostic controller snippet in `backend/src/routes/user.vehicle.routes.ts`. Added auth-toast behavior for login/register in `frontend/src/pages/AuthPage.tsx` to improve error visibility while testing flows. Added integration test file `backend/tests/integration/vehicles.pagination.test.ts` to assert non-overlapping IDs across pages.
+
+---

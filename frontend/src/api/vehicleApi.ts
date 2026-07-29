@@ -5,8 +5,14 @@ import type {
   VehicleFilters,
 } from '../types';
 
+export interface VehicleQuery extends VehicleFilters {
+  keyword?: string;
+  page?: number;
+  limit?: number;
+}
+
 export const getVehicles = async (
-  filters: VehicleFilters = {}
+  filters: VehicleQuery = {}
 ): Promise<VehicleListResponse> => {
   const res = await axiosInstance.get('/vehicles', { params: filters });
   return res.data;

@@ -33,8 +33,9 @@ const AuthPage = () => {
       dispatch(setCredentials({ user, token: res.token }));
       toast.success(`Welcome back, ${user.name.split(' ')[0]}!`);
       navigate(redirectTo, { replace: true });
-    } catch {
-      // handled globally by axios interceptor
+    } catch (err: any) {
+      const message = err?.response?.data?.message || err?.message || 'Invalid email or password';
+      toast.error(message);
     } finally {
       setSubmitting(false);
     }
@@ -51,8 +52,9 @@ const AuthPage = () => {
       dispatch(setCredentials({ user: res.user, token: res.token }));
       toast.success(`Account created! Welcome, ${res.user.name.split(' ')[0]}.`);
       navigate(redirectTo, { replace: true });
-    } catch {
-      // handled globally
+    } catch (err: any) {
+      const message = err?.response?.data?.message || err?.message || 'Registration failed';
+      toast.error(message);
     } finally {
       setSubmitting(false);
     }
@@ -98,13 +100,13 @@ const AuthPage = () => {
         <ArrowLeft className="h-4 w-4" /> Back to home
       </Link>
 
-      <div className="relative flex w-full max-w-5xl overflow-hidden rounded-3xl border-2 border-stone-800 bg-stone-900 shadow-2xl shadow-black/40 lg:h-[600px]">
+      <div className="relative flex w-full max-w-5xl overflow-hidden rounded-3xl border-2 border-stone-800 bg-stone-900 shadow-2xl shadow-black/40 lg:h-150">
         {/* Desktop sliding brand panel — anchored LEFT, slides right on register */}
         <SlidingPanel isLogin={isLogin} />
 
         {/* Mobile brand header (shown only below lg) */}
-        <div className="flex w-full flex-col items-center gap-2 border-b border-stone-800 bg-gradient-to-br from-stone-900 to-amber-950/30 px-6 py-8 lg:hidden">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-700">
+        <div className="flex w-full flex-col items-center gap-2 border-b border-stone-800 bg-linear-to-br from-stone-900 to-amber-950/30 px-6 py-8 lg:hidden">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br from-amber-500 to-amber-700">
             <Car className="h-6 w-6 text-stone-950" />
           </div>
           <h1 className="text-xl font-bold text-stone-50">

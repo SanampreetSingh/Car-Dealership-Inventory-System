@@ -6,6 +6,7 @@
  "scripts": {
   "start": "node dist/server.js",
   "dev": "nodemon --exec ts-node ./server.ts",
+  "seed": "ts-node ./seed.ts",
   "build": "tsc",
   "test": "jest --watchAll",
   "test:coverage": "jest --coverage"

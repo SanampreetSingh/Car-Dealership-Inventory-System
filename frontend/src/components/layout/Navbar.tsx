@@ -32,7 +32,7 @@ const Navbar = () => {
       <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link to="/" className="flex shrink-0 items-center gap-2 group">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500 to-amber-700 shadow-lg shadow-amber-900/30 transition-transform group-hover:scale-105">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-linear-to-br from-amber-500 to-amber-700 shadow-lg shadow-amber-900/30 transition-transform group-hover:scale-105">
             <Car className="h-5 w-5 text-stone-950" />
           </div>
           <span className="hidden font-bold tracking-tight text-stone-50 sm:block">
@@ -78,7 +78,7 @@ const Navbar = () => {
 
           {isAuthenticated ? (
             <div className="flex items-center gap-3 border-l border-stone-800 pl-3">
-              <span className="flex items-center gap-1.5 text-sm text-stone-400">
+              <span className="flex items-center gap-1.5 cursor-pointer hover:text-amber-300 text-sm text-stone-400">
                 <User className="h-4 w-4" />
                 {user?.name?.split(' ')[0]}
               </span>
@@ -119,7 +119,7 @@ const Navbar = () => {
             transition={{ duration: 0.25 }}
             className="overflow-hidden border-t border-stone-800 md:hidden"
           >
-            <div className="flex flex-col gap-4 px-4 py-4">
+            <div className="flex flex-col gap-4 px-4 py-4 justify-center ">
               <form onSubmit={handleSearch} className="relative">
                 <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-500" />
                 <input
@@ -134,7 +134,7 @@ const Navbar = () => {
               <Link
                 to="/search"
                 onClick={() => setMenuOpen(false)}
-                className="text-sm font-medium text-stone-300"
+                className="text-sm justify-center flex font-medium text-stone-300"
               >
                 Browse Vehicles
               </Link>
@@ -143,7 +143,7 @@ const Navbar = () => {
                 <Link
                   to="/admin"
                   onClick={() => setMenuOpen(false)}
-                  className="text-sm font-medium text-stone-300"
+                  className="text-sm justify-center flex font-medium text-stone-300"
                 >
                   Admin Dashboard
                 </Link>
@@ -155,7 +155,7 @@ const Navbar = () => {
                     handleLogout();
                     setMenuOpen(false);
                   }}
-                  className="flex items-center gap-2 rounded-lg bg-stone-800 px-4 py-2 text-sm font-medium text-stone-200"
+                  className="flex items-center justify-center gap-2 rounded-lg bg-stone-800 px-4 py-2 text-sm font-medium text-stone-200"
                 >
                   <LogOut className="h-4 w-4" /> Logout ({user?.name?.split(' ')[0]})
                 </button>
@@ -163,7 +163,7 @@ const Navbar = () => {
                 <Link
                   to="/auth"
                   onClick={() => setMenuOpen(false)}
-                  className="rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-center text-sm font-semibold text-stone-950"
+                  className="rounded-lg bg-linear-to-r from-amber-500 to-amber-600 px-4 py-2 text-center text-sm font-semibold text-stone-950"
                 >
                   Login
                 </Link>

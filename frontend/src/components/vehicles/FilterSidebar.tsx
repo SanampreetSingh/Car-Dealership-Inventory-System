@@ -8,7 +8,7 @@ interface FilterSidebarProps {
   onClear: () => void;
 }
 
-const CATEGORIES = ['Sedan', 'SUV', 'Truck', 'Coupe', 'Hatchback', 'EV', 'Convertible', 'Other'];
+const CATEGORIES = ['Sedan', 'SUV', 'Truck', 'Coupe', 'Hatchback', 'EV', 'Convertible', 'Luxury', 'MPV', 'Other'];
 
 const FilterSidebar = ({ filters, onApply, onClear }: FilterSidebarProps) => {
   const [make, setMake] = useState(filters.make || '');

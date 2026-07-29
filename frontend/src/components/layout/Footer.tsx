@@ -48,7 +48,7 @@ const Footer = () => {
           <div>
             <h4 className="mb-4 text-sm font-semibold text-stone-200">Categories</h4>
             <ul className="space-y-2 text-sm text-stone-500">
-              {['Sedan', 'SUV', 'Truck', 'Coupe', 'Hatchback', 'EV', 'Convertible', 'Other'].map((cat) => (
+              {['Sedan', 'SUV', 'Truck', 'Coupe', 'Hatchback', 'EV', 'Convertible', 'Luxury', 'MPV', 'Other'].map((cat) => (
                 <li key={cat}>
                   <Link
                     to={`/search?category=${encodeURIComponent(cat)}`}

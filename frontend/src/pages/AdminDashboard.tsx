@@ -71,7 +71,7 @@ const AdminDashboard = () => {
             setEditingVehicle(null);
             setShowForm(true);
           }}
-          className="flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-5 py-2.5 font-semibold text-stone-950 shadow-lg shadow-amber-900/30 transition-transform hover:scale-105"
+          className="flex items-center justify-center gap-2 rounded-lg bg-linear-to-r from-amber-500 to-amber-600 px-5 py-2.5 font-semibold text-stone-950 shadow-lg shadow-amber-900/30 transition-transform hover:scale-105"
         >
           <Plus className="h-4 w-4" /> Add Vehicle
         </button>

@@ -6,34 +6,55 @@ import Vehicle from '../models/Vehicle';
  */
 export const getVehicles = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { category, make, minPrice, maxPrice, page = 1, limit = 40 } = req.query;
+    const { category, make, minPrice, maxPrice, keyword, page = 1, limit = 40 } = req.query;
 
-    const query: any = {};
+    const conditions: any[] = [];
 
-    if (category) query.category = category;
-    if (make) query.make = new RegExp(make as string, 'i'); // Case-insensitive make search
-    
-    if (minPrice || maxPrice) {
-      query.price = {};
-      if (minPrice) query.price.$gte = Number(minPrice);
-      if (maxPrice) query.price.$lte = Number(maxPrice);
+    if (keyword) {
+      const keywordRegex = new RegExp(keyword as string, 'i');
+      conditions.push({
+        $or: [
+          { make: keywordRegex },
+          { model: keywordRegex },
+          { description: keywordRegex },
+          { category: keywordRegex },
+        ],
+      });
     }
 
+    if (category) {
+      conditions.push({ category });
+    }
+
+    if (make) {
+      conditions.push({ make: new RegExp(make as string, 'i') });
+    }
+
+    if (minPrice || maxPrice) {
+      const priceCondition: any = {};
+      if (minPrice) priceCondition.$gte = Number(minPrice);
+      if (maxPrice) priceCondition.$lte = Number(maxPrice);
+      conditions.push({ price: priceCondition });
+    }
+
+    const query = conditions.length > 0 ? { $and: conditions } : {};
     const skip = (Number(page) - 1) * Number(limit);
 
     const vehicles = await Vehicle.find(query)
       .skip(skip)
       .limit(Number(limit))
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1, _id: 1 });
 
     const total = await Vehicle.countDocuments(query);
+    const normalizedPage = Math.max(1, Number(page) || 1);
+    const totalPages = Math.max(1, Math.ceil(total / Number(limit)) || 1);
 
     res.status(200).json({
       success: true,
       count: vehicles.length,
       total,
-      totalPages: Math.ceil(total / Number(limit)),
-      currentPage: Number(page),
+      totalPages,
+      currentPage: Math.min(normalizedPage, totalPages),
       vehicles,
     });
   } catch (error: any) {

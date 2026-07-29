@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { getVehicles, searchVehicles } from '../api/vehicleApi';
+import { getVehicles } from '../api/vehicleApi';
 import type { Vehicle, VehicleFilters } from '../types';
 import VehicleGrid from '../components/vehicles/VehicleGrid';
 import VehicleModal from '../components/vehicles/VehicleModal';
@@ -26,45 +26,87 @@ const SearchPage = () => {
       ? Number(searchParams.get('maxPrice'))
       : undefined,
   };
-  const page = Number(searchParams.get('page')) || 1;
+  const page = Math.max(1, Number(searchParams.get('page')) || 1);
+  const hasActiveFilters = Boolean(
+    filters.make || filters.category || filters.minPrice !== undefined || filters.maxPrice !== undefined
+  );
 
   const loadVehicles = useCallback(async () => {
     setLoading(true);
     try {
-      if (keyword) {
-        const res = await searchVehicles(keyword);
-        setVehicles(res.vehicles);
-        setTotalPages(1);
-        setCurrentPage(1);
-      } else {
-        const res = await getVehicles({ ...filters, page, limit: 9 });
-        setVehicles(res.vehicles);
-        setTotalPages(res.totalPages);
-        setCurrentPage(res.currentPage);
+      const normalizedPage = Math.max(1, Number(page) || 1);
+
+      const res = await getVehicles({
+        ...filters,
+        keyword: keyword || undefined,
+        page: normalizedPage,
+        limit: 9,
+      });
+
+      const safeTotalPages = Math.max(1, res.totalPages || 1);
+      const safeCurrentPage = Math.min(normalizedPage, safeTotalPages);
+
+      if (safeCurrentPage !== normalizedPage) {
+        const params = Object.fromEntries(searchParams.entries());
+        params.page = String(safeCurrentPage);
+        setSearchParams(params);
+        return;
       }
+
+      setVehicles(res.vehicles || []);
+      setTotalPages(safeTotalPages);
+      setCurrentPage(safeCurrentPage);
     } catch {
       // handled globally
     } finally {
       setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [keyword, page, JSON.stringify(filters)]);
+  }, [keyword, page, hasActiveFilters, JSON.stringify(filters)]);
 
   useEffect(() => {
     loadVehicles();
   }, [loadVehicles]);
 
   const handleApplyFilters = (newFilters: VehicleFilters) => {
-    const params: Record<string, string> = {};
-    if (newFilters.make) params.make = newFilters.make;
-    if (newFilters.category) params.category = newFilters.category;
-    if (newFilters.minPrice) params.minPrice = String(newFilters.minPrice);
-    if (newFilters.maxPrice) params.maxPrice = String(newFilters.maxPrice);
+    const params = Object.fromEntries(searchParams.entries());
+
+    if (newFilters.make) {
+      params.make = newFilters.make;
+    } else {
+      delete params.make;
+    }
+
+    if (newFilters.category) {
+      params.category = newFilters.category;
+    } else {
+      delete params.category;
+    }
+
+    if (newFilters.minPrice !== undefined) {
+      params.minPrice = String(newFilters.minPrice);
+    } else {
+      delete params.minPrice;
+    }
+
+    if (newFilters.maxPrice !== undefined) {
+      params.maxPrice = String(newFilters.maxPrice);
+    } else {
+      delete params.maxPrice;
+    }
+
+    delete params.page;
     setSearchParams(params);
   };
 
   const handleClearFilters = () => {
-    setSearchParams({});
+    const params = Object.fromEntries(searchParams.entries());
+    delete params.make;
+    delete params.category;
+    delete params.minPrice;
+    delete params.maxPrice;
+    delete params.page;
+    setSearchParams(params);
   };
 
   const goToPage = (p: number) => {
@@ -96,13 +138,11 @@ const SearchPage = () => {
       </div>
 
       <div className="flex flex-col gap-8 lg:flex-row">
-        {!keyword && (
-          <FilterSidebar
-            filters={filters}
-            onApply={handleApplyFilters}
-            onClear={handleClearFilters}
-          />
-        )}
+        <FilterSidebar
+          filters={filters}
+          onApply={handleApplyFilters}
+          onClear={handleClearFilters}
+        />
 
         <div className="flex-1">
           <VehicleGrid
@@ -114,7 +154,7 @@ const SearchPage = () => {
             onQuickView={setQuickViewVehicle}
           />  
 
-          {!loading && !keyword && totalPages > 1 && (
+          {!loading && totalPages > 1 && (
             <div className="mt-10 flex items-center justify-center gap-2">
               <button
                 onClick={() => goToPage(currentPage - 1)}
@@ -129,7 +169,7 @@ const SearchPage = () => {
                   onClick={() => goToPage(p)}
                   className={`h-9 w-9 rounded-lg text-sm font-medium transition-colors ${
                     p === currentPage
-                      ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950'
+                      ? 'bg-linear-to-r from-amber-500 to-amber-600 text-stone-950'
                       : 'border border-stone-700 text-stone-300 hover:border-stone-500'
                   }`}
                 >

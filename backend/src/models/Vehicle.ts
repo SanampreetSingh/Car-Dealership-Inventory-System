@@ -31,7 +31,7 @@ const vehicleSchema = new Schema<IVehicle>(
       type: String,
       required: [true, 'Category is required'],
       trim: true,
-      enum: ['Sedan', 'SUV', 'Truck', 'Coupe', 'Hatchback', 'EV', 'Convertible', 'Other'],
+      enum: ['Sedan', 'SUV', 'Truck', 'Coupe', 'Hatchback', 'EV', 'Convertible', 'Luxury', 'MPV', 'Other'],
       index: true,
     },
     price: {
