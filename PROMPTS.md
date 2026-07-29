@@ -226,3 +226,16 @@
   > Confirmed the footer was correctly wired into App.tsx below the routed content, and checked the mobile drawer's animation didn't clip content on small screens.
 
 ---
+
+## Module: Search & Filtering
+### Prompt: Build Filter Sidebar and Search Page with Pagination
+* **Date**: 2026-07-29
+* **Tool Used**: Claude (Sonnet)
+* **Prompt**:
+  > Now for the Search page — FilterSidebar + VehicleGrid + pagination.
+* **Generated Output / Context**:
+  > The AI built a FilterSidebar (make/category/price range, desktop sidebar + mobile drawer) and a SearchPage that stores filter state in the URL via `useSearchParams` for shareable/bookmarkable search state, handles keyword search and filter search as mutually exclusive paths matching the backend API design, and includes pagination controls.
+* **Manual Adjustments Made**:
+  > Verified filters correctly persisted across page refresh via the URL, and that switching to a keyword search correctly hid the filter sidebar per the backend's endpoint design.
+
+---
