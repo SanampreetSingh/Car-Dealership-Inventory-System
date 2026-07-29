@@ -175,3 +175,14 @@
 
 ---
 
+## Module: Vehicle Inventory - Public & User API (Controller & Routes Implementation)
+### Prompt: Implement User Controller, Routes, and App Integration
+* **Date**: 2026-07-29
+* **Tool Used**: Gemini
+* **Prompt**:
+  > Now let's create the user controller and its corresponding route file. Also, review the Express app mounting setup (`app.use('/api/vehicles', adminVehicleRoutes)` and `app.use('/api/vehicles', userVehicleRoutes)`) to ensure correct routing order and conflict-free endpoint resolution.
+* **Generated Output / Context**:
+  > The AI implemented the `user.vehicle.controller.ts` with robust query filtering (category, make, price ranges), pagination, keyword searching, and stock-decrementing purchase logic. It structured the user router to secure the purchase endpoint using authentication middleware (`protect`) and evaluated Express route mounting behavior for `/api/vehicles`.
+* **Manual Adjustments Made**:
+  > Finalized the controller logic, aligned import paths with project conventions (`controllers/user.vehicle.controller` and `middlewares/auth.middleware`), and confirmed the app-level route integration strategy.
+

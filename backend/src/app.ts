@@ -4,6 +4,7 @@ import cors from 'cors';
 // Import Routers
 import authRoutes from './routes/auth.routes'; // Assuming you have an auth router
 import adminVehicleRoutes from './routes/admin.vehicle.routes';
+import userVehicleRoutes from './routes/user.vehicle.routes';
 
 const app: Application = express();
 
@@ -14,7 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // API Routes
 app.use('/api/auth', authRoutes); 
-app.use('/api/vehicles', adminVehicleRoutes);
+app.use('/api/admin/vehicles', adminVehicleRoutes);
+app.use('/api/vehicles', userVehicleRoutes);
 
 // Optional: Basic 404 handler for undefined routes
 app.use((req, res) => {

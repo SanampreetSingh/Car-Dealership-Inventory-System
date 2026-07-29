@@ -64,10 +64,10 @@ describe('Admin Vehicle API Integration Tests', () => {
   // ==========================================
   // 1. CREATE VEHICLE (POST /api/vehicles)
   // ==========================================
-  describe('POST /api/vehicles', () => {
+  describe('POST /api/admin/vehicles', () => {
     it('should create a vehicle with an image when admin submits valid data (201)', async () => {
       const res = await request(app)
-        .post('/api/vehicles')
+        .post('/api/admin/vehicles')
         .set('Authorization', `Bearer ${adminToken}`)
         .field('make', 'Toyota')
         .field('model', 'Camry')
@@ -89,7 +89,7 @@ describe('Admin Vehicle API Integration Tests', () => {
 
     it('should fail if a vehicle with the exact make, model, year, and category already exists (409)', async () => {
       const res = await request(app)
-        .post('/api/vehicles')
+        .post('/api/admin/vehicles')
         .set('Authorization', `Bearer ${adminToken}`)
         .field('make', 'Toyota')       // Matches first test
         .field('model', 'Camry')       // Matches first test
@@ -105,7 +105,7 @@ describe('Admin Vehicle API Integration Tests', () => {
 
     it('should fail if required fields are missing (400)', async () => {
       const res = await request(app)
-        .post('/api/vehicles')
+        .post('/api/admin/vehicles')
         .set('Authorization', `Bearer ${adminToken}`)
         .field('make', 'Toyota') // Missing model, category, price, quantity
         .attach('image', dummyImagePath);
@@ -116,7 +116,7 @@ describe('Admin Vehicle API Integration Tests', () => {
 
     it('should block a request missing an auth token (401)', async () => {
       const res = await request(app)
-        .post('/api/vehicles')
+        .post('/api/admin/vehicles')
         .field('make', 'Toyota');
 
       expect(res.status).toBe(401);
@@ -124,7 +124,7 @@ describe('Admin Vehicle API Integration Tests', () => {
 
     it('should block a standard user from creating a vehicle (403)', async () => {
       const res = await request(app)
-        .post('/api/vehicles')
+        .post('/api/admin/vehicles')
         .set('Authorization', `Bearer ${userToken}`)
         .field('make', 'Honda')
         .attach('image', dummyImagePath);
@@ -136,10 +136,10 @@ describe('Admin Vehicle API Integration Tests', () => {
   // ==========================================
   // 2. UPDATE VEHICLE (PUT /api/vehicles/:id)
   // ==========================================
-  describe('PUT /api/vehicles/:id', () => {
+  describe('PUT /api/admin/vehicles/:id', () => {
     it('should allow an admin to update text fields only (200)', async () => {
       const res = await request(app)
-        .put(`/api/vehicles/${createdVehicleId}`)
+        .put(`/api/admin/vehicles/${createdVehicleId}`)
         .set('Authorization', `Bearer ${adminToken}`)
         .send({ price: 24000, description: 'Updated description' }); 
 
@@ -150,7 +150,7 @@ describe('Admin Vehicle API Integration Tests', () => {
 
     it('should allow an admin to upload a new image and replace the old one (200)', async () => {
       const res = await request(app)
-        .put(`/api/vehicles/${createdVehicleId}`)
+        .put(`/api/admin/vehicles/${createdVehicleId}`)
         .set('Authorization', `Bearer ${adminToken}`)
         .field('price', '23500')
         .attach('image', dummyImagePath); 
@@ -162,7 +162,7 @@ describe('Admin Vehicle API Integration Tests', () => {
     it('should return 404 if updating a non-existent vehicle ID', async () => {
       const fakeId = new mongoose.Types.ObjectId().toString();
       const res = await request(app)
-        .put(`/api/vehicles/${fakeId}`)
+        .put(`/api/admin/vehicles/${fakeId}`)
         .set('Authorization', `Bearer ${adminToken}`)
         .send({ price: 10000 });
 
@@ -171,7 +171,7 @@ describe('Admin Vehicle API Integration Tests', () => {
 
     it('should return 400 for an invalid MongoDB ID format', async () => {
       const res = await request(app)
-        .put(`/api/vehicles/invalid-id-format`)
+        .put(`/api/admin/vehicles/invalid-id-format`)
         .set('Authorization', `Bearer ${adminToken}`)
         .send({ price: 10000 });
 
@@ -180,7 +180,7 @@ describe('Admin Vehicle API Integration Tests', () => {
 
     it('should block a standard user from updating a vehicle (403)', async () => {
       const res = await request(app)
-        .put(`/api/vehicles/${createdVehicleId}`)
+        .put(`/api/admin/vehicles/${createdVehicleId}`)
         .set('Authorization', `Bearer ${userToken}`)
         .send({ price: 100 });
 
@@ -191,10 +191,10 @@ describe('Admin Vehicle API Integration Tests', () => {
   // ==========================================
   // 3. RESTOCK VEHICLE (POST /api/vehicles/:id/restock)
   // ==========================================
-  describe('POST /api/vehicles/:id/restock', () => {
+  describe('POST /api/admin/vehicles/:id/restock', () => {
     it('should allow an admin to increase the quantity (200)', async () => {
       const res = await request(app)
-        .post(`/api/vehicles/${createdVehicleId}/restock`)
+        .post(`/api/admin/vehicles/${createdVehicleId}/restock`)
         .set('Authorization', `Bearer ${adminToken}`)
         .send({ addedQuantity: 3 }); 
 
@@ -206,7 +206,7 @@ describe('Admin Vehicle API Integration Tests', () => {
 
     it('should fail if addedQuantity is negative or invalid (400)', async () => {
       const res = await request(app)
-        .post(`/api/vehicles/${createdVehicleId}/restock`)
+        .post(`/api/admin/vehicles/${createdVehicleId}/restock`)
         .set('Authorization', `Bearer ${adminToken}`)
         .send({ addedQuantity: -5 });
 
@@ -215,7 +215,7 @@ describe('Admin Vehicle API Integration Tests', () => {
 
     it('should block a standard user from restocking a vehicle (403)', async () => {
       const res = await request(app)
-        .post(`/api/vehicles/${createdVehicleId}/restock`)
+        .post(`/api/admin/vehicles/${createdVehicleId}/restock`)
         .set('Authorization', `Bearer ${userToken}`)
         .send({ addedQuantity: 5 });
 
@@ -226,10 +226,10 @@ describe('Admin Vehicle API Integration Tests', () => {
   // ==========================================
   // 4. DELETE VEHICLE (DELETE /api/vehicles/:id)
   // ==========================================
-  describe('DELETE /api/vehicles/:id', () => {
+  describe('DELETE /api/admin/vehicles/:id', () => {
     it('should block a standard user from deleting a vehicle (403)', async () => {
       const res = await request(app)
-        .delete(`/api/vehicles/${createdVehicleId}`)
+        .delete(`/api/admin/vehicles/${createdVehicleId}`)
         .set('Authorization', `Bearer ${userToken}`);
 
       expect(res.status).toBe(403);
@@ -238,7 +238,7 @@ describe('Admin Vehicle API Integration Tests', () => {
     it('should return 404 if deleting a non-existent vehicle ID', async () => {
       const fakeId = new mongoose.Types.ObjectId().toString();
       const res = await request(app)
-        .delete(`/api/vehicles/${fakeId}`)
+        .delete(`/api/admin/vehicles/${fakeId}`)
         .set('Authorization', `Bearer ${adminToken}`);
 
       expect(res.status).toBe(404);
@@ -246,7 +246,7 @@ describe('Admin Vehicle API Integration Tests', () => {
 
     it('should return 400 for an invalid MongoDB ID format', async () => {
       const res = await request(app)
-        .delete(`/api/vehicles/invalid-id-format`)
+        .delete(`/api/admin/vehicles/invalid-id-format`)
         .set('Authorization', `Bearer ${adminToken}`);
 
       expect(res.status).toBe(400);
@@ -254,7 +254,7 @@ describe('Admin Vehicle API Integration Tests', () => {
 
     it('should allow an admin to delete a vehicle (200)', async () => {
       const res = await request(app)
-        .delete(`/api/vehicles/${createdVehicleId}`)
+        .delete(`/api/admin/vehicles/${createdVehicleId}`)
         .set('Authorization', `Bearer ${adminToken}`);
 
       expect(res.status).toBe(200);
