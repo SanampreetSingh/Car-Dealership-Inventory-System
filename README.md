@@ -115,6 +115,7 @@ Create the backend environment file:
 ```bash
 cd backend
 cp .env.example .env
+cp .env.test.example .env.test
 ```
 
 Populate `backend/.env` with values such as:
@@ -125,8 +126,18 @@ JWT_SECRET=your_jwt_secret
 CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
+BACKEND_URL=http://localhost:5000
+SELF_PING_URL=http://localhost:5000
+SELF_PING_INTERVAL_MS=900000
 ```
 
+Populate `backend/.env.test` with values such as:
+
+```env
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+```
 Create the frontend environment file:
 
 ```bash
@@ -137,7 +148,7 @@ cp .env.example .env
 Add the backend URL to `frontend/.env`:
 
 ```env
-VITE_API_BASE_URL=http://localhost:5000
+VITE_API_BASE_URL=http://localhost:5000/api
 ```
 
 ### 3. Seed demo data (optional but recommended)
@@ -215,7 +226,7 @@ The test suite covers authentication, admin vehicle management, public vehicle l
 
 ## Keeping the backend awake
 
-To keep the Render-hosted backend available after deployment, you can add a simple self-ping cron or uptime job. A common approach is to call your own health endpoint every 10–15 minutes using a GitHub Action or a free scheduler service.
+To keep the Render-hosted backend available after deployment, the repository now includes a lightweight health endpoint and a GitHub Actions cron workflow that pings it every 10 minutes.
 
 Example:
 
@@ -223,7 +234,7 @@ Example:
 curl -fsS https://your-render-backend-url.onrender.com/api/health
 ```
 
-If you want, you can add a lightweight health route in the backend and trigger it from a cron job or uptime monitor so the service stays warm.
+For the workflow to work, add a repository secret named `BACKEND_URL` with your deployed Render backend URL, for example `https://your-render-backend-url.onrender.com`.
 
 ## My AI Usage
 

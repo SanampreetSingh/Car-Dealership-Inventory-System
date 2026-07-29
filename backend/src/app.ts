@@ -5,6 +5,7 @@ import cors from 'cors';
 import authRoutes from './routes/auth.routes'; // Assuming you have an auth router
 import adminVehicleRoutes from './routes/admin.vehicle.routes';
 import userVehicleRoutes from './routes/user.vehicle.routes';
+import healthRoutes from './routes/health.routes';
 
 const app: Application = express();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // API Routes
+app.use('/api', healthRoutes);
 app.use('/api/auth', authRoutes); 
 app.use('/api/admin/vehicles', adminVehicleRoutes);
 app.use('/api/vehicles', userVehicleRoutes);
