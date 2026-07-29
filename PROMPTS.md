@@ -213,3 +213,16 @@
   > Verified the interceptor correctly reads `VITE_API_BASE_URL` from `.env` with no hardcoded URLs anywhere, and confirmed the login response's flat shape vs. register's nested shape would need normalization later in the Auth page.
 
 ---
+
+## Module: Layout & Homepage
+### Prompt: Build Navbar, Footer, Hero Homepage, and Vehicle Card
+* **Date**: 2026-07-29
+* **Tool Used**: Claude (Sonnet)
+* **Prompt**:
+  > Now build the Navbar + Hero + Featured Vehicles. (Later) You forgot the footer — add it.
+* **Generated Output / Context**:
+  > The AI built a responsive Navbar with a global search bar, login/logout state, admin link, and an animated mobile drawer (Framer Motion); a Footer with quick links, category links, and contact info; a HomePage with an animated hero section, trust-signal strip, and a featured vehicles section; and a VehicleCard component with stock-aware purchase button, image fallback handling, and hover animations.
+* **Manual Adjustments Made**:
+  > Confirmed the footer was correctly wired into App.tsx below the routed content, and checked the mobile drawer's animation didn't clip content on small screens.
+
+---
