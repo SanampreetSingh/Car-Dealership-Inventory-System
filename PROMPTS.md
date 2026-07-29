@@ -278,3 +278,16 @@
   > Refactored HomePage.tsx and SearchPage.tsx to use VehicleGrid + VehicleModal instead of inline duplicated logic, and verified purchasing from inside the modal correctly syncs the quantity back to the underlying grid state.
 
 ---
+
+## Module: Redirect Consistency Pass
+### Prompt: Wire Post-Login Redirect State Consistently Across the App
+* **Date**: 2026-07-29
+* **Tool Used**: Claude (Sonnet)
+* **Prompt**:
+  > Wire the location.state.from redirect from VehicleCard's purchase click into AuthPage, and do a final pass checking all imports/props line up across files.
+* **Generated Output / Context**:
+  > The AI found that ProtectedRoute redirected unauthenticated users to /auth without passing along location.state, so admin-route bounces always landed back on the homepage after login instead of the originally requested page. It also found VehicleModal's purchase handler had a hardcoded '/search' redirect target instead of using the actual current path. Both were fixed to consistently pass `{ from: <actual path + search> }`.
+* **Manual Adjustments Made**:
+  > Tested three redirect paths end-to-end: card purchase while logged out, modal purchase while logged out, and direct navigation to /admin while logged out — all three now correctly return the user to their original destination after login.
+
+---
