@@ -39,8 +39,11 @@ const HomePage = () => {
     <div>
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-stone-800">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(217,119,6,0.15),transparent_50%)]" />
-        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+        {/* Added pointer-events-none here to prevent click blocking */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(217,119,6,0.15),transparent_50%)]" />
+        
+        {/* Added relative and z-10 here to pull content above the background */}
+        <div className="relative z-10 mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
           <div className="grid items-center gap-10 lg:grid-cols-2">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -67,12 +70,16 @@ const HomePage = () => {
                 >
                   Browse Inventory <ArrowRight className="h-4 w-4" />
                 </Link>
-                <Link
-                  to="#featured"
+              
+                <button
+                  type="button"
+                  onClick={() => {
+                    document.getElementById('featured')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                   className="rounded-lg border border-stone-700 px-6 py-3 font-semibold text-stone-200 transition-colors hover:border-amber-600 hover:text-amber-500"
                 >
                   See Featured
-                </Link>
+                </button>
               </div>
 
               <div className="mt-10 grid grid-cols-3 gap-4 border-t border-stone-800 pt-6">
