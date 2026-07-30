@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import HomePage from './pages/HomePage';
@@ -24,8 +24,8 @@ function App() {
               </ProtectedRoute>
             }
           />
-          {/* Global catch-all route */}
-          <Route path="*" element={<HomePage />} />
+          {/* Global catch-all route now redirects to root */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
       <Footer />

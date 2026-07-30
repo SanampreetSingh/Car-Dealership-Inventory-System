@@ -10,7 +10,12 @@ import healthRoutes from './routes/health.routes';
 const app: Application = express();
 
 // Global Middlewares
-app.use(cors());
+// Configure CORS to use the environment variable
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  credentials: true, // Enable if your frontend needs to send cookies or authorization headers
+};
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
