@@ -24,6 +24,8 @@ function App() {
               </ProtectedRoute>
             }
           />
+          {/* Global catch-all route */}
+          <Route path="*" element={<HomePage />} />
         </Routes>
       </main>
       <Footer />
