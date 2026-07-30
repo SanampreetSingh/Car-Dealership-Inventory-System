@@ -5,8 +5,8 @@ A full-stack inventory management application for car dealerships. It allows use
 Repository: https://github.com/SanampreetSingh/Car-Dealership-Inventory-System
 
 Live Demo:
-- Frontend: https://your-vercel-app-url.vercel.app
-- Backend API: https://your-render-backend-url.onrender.com
+- Frontend: https://apexmotors-orcin.vercel.app
+- Backend API: https://apex-motors-41ke.onrender.com
 
 ## What the project does
 
@@ -32,6 +32,8 @@ Live Demo:
   - `seed.ts` — database seeding script for demo data
 - `frontend/` — Vite + React application
   - `src/` — pages, components, services, hooks, context
+- `test-report.pdf` — combined backend automated + frontend manual test report
+- `PROMPTS.md` — full AI tooling prompt history for this project
 
 ## Screenshots
 
@@ -212,6 +214,20 @@ npm test
 
 The test suite covers authentication, admin vehicle management, public vehicle listing, and Cloudinary upload behavior.
 
+## Test Report
+
+A complete test report is included at [`test-report.pdf`](./test-report.pdf) in the project root. It covers:
+
+- **Backend (automated):** Full Jest + Supertest integration test results — 30/30 tests passing across authentication, admin vehicle management, public/user vehicle flows, and live Cloudinary integration, with an 87.41% overall statement coverage summary broken down by file.
+- **Frontend (manual):** A structured 12-case manual end-to-end workflow verification covering registration, login, search/filtering, quick-view, purchase gating for unauthenticated users, and the full admin CRUD flow (add/edit/restock), each with a supporting screenshot.
+
+To regenerate the backend portion locally:
+
+```bash
+cd backend
+npx jest --coverage
+```
+
 ## Important implementation notes
 
 - Pagination uses a deterministic sort of `{ createdAt: -1, _id: 1 }` to avoid duplicate vehicles across pages when timestamps are identical.
@@ -244,19 +260,19 @@ This project used AI-assisted development throughout the build process. The AI t
 
 - GitHub Copilot (in VS Code) for inline code suggestions, quick fixes, and small refactors.
 - GitHub Copilot Chat for repository-wide debugging, patch generation, README drafting, and implementation planning.
-- Gemini for initial scaffolding and architecture suggestions in the early project setup phase.
-- Claude (Sonnet) for the frontend structure, UI component planning, and design-oriented implementation steps.
+- Gemini for initial scaffolding and architecture suggestions in the early project setup phase, and for production deployment troubleshooting (CORS, SPA routing).
+- Claude (Sonnet) for the frontend structure, UI component planning, design-oriented implementation steps, and generation of the final test report.
 
 ### How AI was used
 
-- Gemini helped scaffold the project structure, backend schemas, testing strategy, and an initial architecture for the Express + MongoDB setup.
-- VS Code AI and GitHub Copilot were used to fix backend and frontend errors, align API routes, patch type issues, and improve the reliability of the auth and inventory flows.
-- Claude helped shape the frontend experience, including the homepage, navbar, auth panel, vehicle cards, search page, admin dashboard, and modal-based quick view experience.
-- AI also assisted with documentation, seeded-data planning, and the creation of a detailed README and commit-message suggestions.
+- Gemini helped scaffold the project structure, backend schemas, testing strategy, and an initial architecture for the Express + MongoDB setup. It later helped diagnose and resolve production deployment issues, including SPA routing 404s on Vercel and a CORS origin mismatch on the Render-hosted backend.
+- VS Code AI and GitHub Copilot were used to fix backend and frontend errors, align API routes, patch type issues, resolve image upload/Cloudinary bugs, stabilize pagination, and improve the reliability of the auth and inventory flows.
+- Claude helped shape the frontend experience, including the homepage, navbar, auth panel, vehicle cards, search page, admin dashboard, and modal-based quick view experience. It also diagnosed and fixed a sliding-panel layout bug, and generated the project's combined test report (LaTeX-based PDF covering backend automated results and frontend manual workflow testing).
+- AI also assisted with documentation, seeded-data planning, commit message drafting, and PROMPTS.md/README structuring.
 
 ### Reflection
 
-AI significantly sped up development by helping create structure quickly, suggesting implementation patterns, and reducing repetitive work. It was especially helpful for boilerplate, debugging, and documentation. However, the final result still required manual review, environment verification, and testing to make sure the application was correct, secure, and consistent with the project requirements.
+AI significantly sped up development by helping create structure quickly, suggesting implementation patterns, and reducing repetitive work. It was especially helpful for boilerplate, debugging, documentation, and producing a polished test report. However, the final result still required manual review, environment verification, and end-to-end testing to make sure the application was correct, secure, and consistent with the project requirements. Notably, one AI-suggested change (unifying keyword search with filter search) was reviewed, tested, and ultimately reverted after determining the original design better matched the backend API's documented behavior — a reminder that AI suggestions still need human judgment before being accepted.
 
 ## Contributing
 
@@ -267,4 +283,4 @@ AI significantly sped up development by helping create structure quickly, sugges
 
 ## License
 
-This repository is intended for personal and educational use. Add a license file if you plan to publish or share it publicly beyond the current project scope.
+This repository is public for the purposes of this technical assessment. No formal license has been applied.

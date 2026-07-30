@@ -382,3 +382,29 @@
   > Implemented deterministic sort tie-breaker in `backend/src/controllers/user.vehicle.controller.ts`: `.sort({ createdAt: -1, _id: 1 })`. Updated `frontend/src/pages/SearchPage.tsx` to call the unified endpoint and to reset/clamp `page` when filters change. Added simple diagnostic controller snippet in `backend/src/routes/user.vehicle.routes.ts`. Added auth-toast behavior for login/register in `frontend/src/pages/AuthPage.tsx` to improve error visibility while testing flows. Added integration test file `backend/tests/integration/vehicles.pagination.test.ts` to assert non-overlapping IDs across pages.
 
 ---
+
+## Module: Infrastructure & Production Deployment — CORS & SPA Routing Resolution
+### Prompt: Resolve SPA 404 Routing Exceptions and Strict CORS Origin Mismatches
+* **Date**: 2026-07-30
+* **Tool Used**: Gemini
+* **Prompt**:
+  > The production deployment of the Apex Motors monorepo is experiencing connectivity and routing disruptions. The Vercel-hosted frontend encounters 404 NOT_FOUND errors upon manual navigation or page refresh on non-root routes (e.g., `/search`). Concurrently, API requests to the Render-hosted Node.js backend are failing due to Cross-Origin Resource Sharing (CORS) policy violations. These manifest as 401 Unauthorized status codes and origin mismatch errors in the client console, despite the implementation of the `cors()` middleware. Please: Provide an architectural solution to correct the Vercel Single Page Application (SPA) routing without modifying the existing Vite build configuration. Analyze the root cause of the CORS origin mismatch given the currently configured environment variables, and outline the precise remediation steps. Finally, supply standardized git commit messages to document these infrastructure and security modifications.
+* **Generated Output / Context**:
+  > Plan: (1) Address the Vercel SPA routing limitation by introducing a server-level configuration (`vercel.json`) to rewrite all incoming traffic to `index.html`, thereby delegating route resolution to React Router and mitigating the 404 exceptions. (2) Conduct root-cause analysis on the CORS failure: identified a strict string-matching discrepancy caused by a trailing slash in the Render `FRONTEND_URL` environment variable (`https://apexmotors-orcin.vercel.app/`), which conflicts with the browser's standardized Origin header. (3) Fortify the backend `server.ts` by configuring the CORS middleware to strictly validate against the sanitized environment variable. (4) Generate semantic git commit statements encapsulating the frontend routing rewrite, the `App.jsx` fallback route optimization, and the backend security enhancements.
+* **Manual Adjustments Made**:
+  > Authored and committed `frontend/vercel.json` with a global wildcard rewrite rule targeting `index.html` to ensure stable SPA navigation. Refactored the global fallback route in `frontend/src/App.jsx` to utilize `<Navigate replace to="/"/>` for optimized client-side redirection. Hardened the backend API security posture in `server.ts` by enforcing strict CORS origin validation referencing `process.env.FRONTEND_URL`. Sanitized the production environment variables within the Render dashboard by removing the trailing slash from the frontend URL, successfully resolving the origin mismatch and restoring full client-server communication. Codebase changes were committed to the repository utilizing the provided semantic formatting.
+
+  ---
+
+## Module: Test Report Generation
+### Prompt: Generate Combined Backend + Frontend Test Report (LaTeX/PDF)
+* **Date**: 2026-07-30
+* **Tool Used**: Claude (Sonnet)
+* **Prompt**:
+  > I uploaded backend Jest coverage terminal screenshots and frontend manual workflow screenshots to Overleaf — generate a professional test report covering both, then help polish the formatting for a placement assessment deliverable.
+* **Generated Output / Context**:
+  > The AI produced a full LaTeX document (`main.tex`) structured as: a title page, table of contents, executive summary, a backend section detailing all 30 passing Jest/Supertest integration tests grouped by endpoint (admin vehicle CRUD, auth, public/user vehicle catalog, Cloudinary), a full code coverage table (87.41% overall), and a frontend section documenting 12 manual end-to-end test cases (homepage, login/register, search, quick-view, purchase gating, admin dashboard, add/edit vehicle) each with an embedded screenshot. It was then revised for professional formatting — added a proper title page, executive summary, consistent section rules, and removed garish colors — matching the visual tone of a formal engineering deliverable.
+* **Manual Adjustments Made**:
+  > Uploaded the corresponding screenshots to the Overleaf project with matching filenames (`backend_1.png`–`backend_3.png`, `frontend_1.png`–`frontend_12.png`), compiled the document, downloaded the resulting PDF as `test-report.pdf`, and placed it at the project root (alongside `README.md` and `PROMPTS.md`) rather than inside either `backend/` or `frontend/`, since it documents both halves of the stack.
+
+---
