@@ -408,3 +408,17 @@
   > Uploaded the corresponding screenshots to the Overleaf project with matching filenames (`backend_1.png`–`backend_3.png`, `frontend_1.png`–`frontend_12.png`), compiled the document, downloaded the resulting PDF as `test-report.pdf`, and placed it at the project root (alongside `README.md` and `PROMPTS.md`) rather than inside either `backend/` or `frontend/`, since it documents both halves of the stack.
 
 ---
+
+## Full AI Chat Transcripts
+
+For full transparency, complete raw chat histories for the primary AI tooling sessions used on this project are linked below. This `PROMPTS.md` file itself remains a curated summary of these sessions; the links below provide the unabridged, verifiable conversation logs.
+
+- **Claude (Sonnet)** — Frontend architecture, UI component build-out, sliding auth panel, admin dashboard, redirect consistency pass, test report generation:
+  https://claude.ai/share/d20a6e0f-fb23-4547-b6d6-9aea2e8e9371
+
+- **Gemini** — Backend scaffolding, schema design, TDD test suite planning, Cloudinary integration, production deployment (CORS/SPA routing) troubleshooting:
+  https://share.gemini.google/TMYeQIqjQOY3
+
+- **GitHub Copilot (VS Code)** — Backend/frontend bug fixes, TypeScript diagnostics resolution, admin route and category alignment, image upload debugging, pagination stability fix. Copilot Chat in VS Code does not currently offer a shareable conversation link, so these sessions are documented above as detailed module-by-module summaries (prompt, output, and manual adjustments) rather than raw transcripts.
+
+---
